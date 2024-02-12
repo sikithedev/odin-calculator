@@ -18,15 +18,19 @@ operators.forEach((op) => {
   op.addEventListener("click", () => setOperation(op.textContent));
 });
 
+window.addEventListener("keydown", (e) => handleKeyboardInput(e.key));
 equals.addEventListener("click", () => evaluate());
-
 del.addEventListener("click", () => deleteNumber());
-
 clear.addEventListener("click", () => clearDisplay());
 
 function appendNumber(digit) {
   if (String(secondNumber).includes(".") && digit === ".") return;
-  if (secondNumber.split("").every((c) => c === "0")) secondNumber = "";
+  if (
+    String(secondNumber)
+      .split("")
+      .every((c) => c === "0")
+  )
+    secondNumber = "";
   if (/[a-zA-Z]/.test(secondNumber)) secondNumber = "";
 
   secondNumber += digit;
@@ -64,6 +68,14 @@ function deleteNumber() {
   updateDisplay(secondNumber);
 }
 
+function handleKeyboardInput(key) {
+  if ((key >= 0 && key <= 9) || key === ".") appendNumber(key);
+  if (key === "=" || key === "Enter") evaluate();
+  if (key === "Backspace") deleteNumber();
+  if (key === "Escape") clearDisplay();
+  if (["+", "-", "*", "/"].includes(key)) setOperation(key);
+}
+
 function updateDisplay(string) {
   string = String(string);
   if (string === "") string = "0";
@@ -88,7 +100,6 @@ function operate(operator, a, b) {
     "/": (a, b) => (b === 0 ? "lol" : a / b),
   };
 
-  console.log(Number(a), operator, Number(b));
   return operators[operator](Number(a), Number(b));
 }
 
