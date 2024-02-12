@@ -25,6 +25,7 @@ body {
 
 #display {
   font-family: monospace;
+  text-align: right;
   font-size: 2rem;
   margin: 0;
   padding: 5px 10px;
